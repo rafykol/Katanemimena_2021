@@ -1,0 +1,96 @@
+Για να τρεξει το πρόγραμμα πρέπει να:
+
+1. υπάρχει ένας appache v.9
+
+2. βάλετε τα στοιχια της δικια σας βαση στα αρχεία:
+	α)application.properties
+	β) hibernate.cfg.xml
+
+3. τρέξετε τους παρακάτω πίνακες στην βαση δεδομένων, με τουλάχιστον εναν admin στο userς:
+
+USE students;
+
+DROP TABLE  IF EXISTS offers;
+DROP TABLE  IF EXISTS courses;
+DROP TABLE  IF EXISTS users;
+
+CREATE TABLE users (
+id int(11) NOT NULL AUTO_INCREMENT,
+username varchar(45) NOT NULL UNIQUE,
+`password` varchar(100) NOT NULL,
+first_name varchar(45) DEFAULT NULL,
+last_name varchar(45) DEFAULT NULL,
+email varchar(45) DEFAULT NULL UNIQUE,
+`authority` varchar(50) NOT NULL,
+`enabled` tinyint(1) NOT NULL,
+PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE courses (
+id int(11) NOT NULL AUTO_INCREMENT,
+name varchar(45) DEFAULT NULL,
+proffessor_id int(11) DEFAULT NULL,
+PRIMARY KEY (id),
+UNIQUE KEY `TITLE_UNIQUE` (`name`),
+CONSTRAINT `FK_DETAIL` FOREIGN KEY (proffessor_id)
+REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE offers (
+id int(11) NOT NULL AUTO_INCREMENT,
+lab_hours int(3) DEFAULT NULL,
+super_hours int(3) DEFAULT NULL,
+tests int(3) DEFAULT NULL,
+status varchar(45) DEFAULT NULL,
+comments varchar(45) DEFAULT NULL,
+proffessor_id int(11) DEFAULT NULL,
+student_id int(11) DEFAULT NULL,
+PRIMARY KEY (id),
+CONSTRAINT `FK_PROF` FOREIGN KEY (proffessor_id)
+REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+CONSTRAINT `FK_STUDENT` FOREIGN KEY (student_id)
+REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO users VALUES
+(1,'prof1', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Oliver','Adams','Oliver@hua.gr', 'ROLE_PROF', 1),
+(2,'prof2', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Jack','Cantrell','Jack@hua.gr', 'ROLE_PROF', 1),
+(3,'prof3', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Harry','Hull','Harry@hua.gr', 'ROLE_PROF', 1),
+(4,'prof4', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Jacob','Herman','Jacob@hua.gr', 'ROLE_PROF', 1),
+(5,'student1', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Charlie','Houston','Charlie@hua.gr', 'ROLE_STUDENT', 1),
+(6,'student2', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Thomas','Lyons','Thomas@hua.gr', 'ROLE_STUDENT', 1),
+(7,'student3', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'George','Sheppard','George@hua.gr', 'ROLE_STUDENT', 1),
+(8,'student4', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Oscar','Thompson','Oscar@hua.gr', 'ROLE_STUDENT', 1),
+(9,'student5', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Amelia','Ford','Amelia@hua.gr', 'ROLE_STUDENT', 1),
+(10,'student6', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Olivia','Nunez','Olivia@hua.gr', 'ROLE_STUDENT', 1),
+(11,'student7', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Isla','Cohen','Isla@hua.gr', 'ROLE_STUDENT', 1),
+(12,'student8', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Emily','Archer','Emily@hua.gr', 'ROLE_STUDENT', 1),
+(13,'root', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Poppy','Elliott','Poppy@hua.gr', 'ROLE_ADMIN', 1),
+(14,'itsec', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Ava','Todd','Ava@hua.gr', 'ROLE_SEC', 1),
+(15,'member', '$2a$04$DR/f..s1siWJc8Xg3eJgpeB28a4V6kYpnkMPeOuq4rLQ42mJUYFGC', 'Isabella','Mayo','Isabella@hua.gr', 'ROLE_MGA', 1);
+
+INSERT INTO courses VALUES
+(1,'Telecommunications', 1),
+(2,'Coding', 2),
+(3,'Math', 3),
+(4,'Networks', 4);
+
+
+INSERT INTO `offers` VALUES
+(9, 35, 35, 40,'Accepted' , NULL, 1, 6),
+(10, 38, 30, 45,'Pen_Submitted' , NULL, 2, 7),
+(11, 35, 35, 42,'Accepted' , NULL, 2, 8),
+(12, 40, 25, 46,'Pen_Acc' , NULL, 3, 9),
+(13, 25, 35, 55,'Pen_Submitted' , NULL, 3, 10),
+(14, 30, 20, 50,'Rejected' , NULL, 4, 11),
+(15, 35, 30, 38,'Accepted' , NULL, 4, 12);
+
+INSERT INTO `offers` VALUES
+(16, 45, 35, 40,'Pen_Submitted' , NULL, 1, 6),
+(17, 30, 10, 50,'Pen_Submitted' , NULL, 4, 11),
+(18, 35, 30, 150,'Pen_Submitted' , NULL, 4, 12);
